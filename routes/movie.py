@@ -5,6 +5,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Form
 
 import pandas as pd 
+import requests
 
 from database.movie import (
     add_movie_data_db,
@@ -72,3 +73,16 @@ async def add_movies_into_database():
     # print(data_dict[0])
     for movie in data_dict:
         new_movie = await add_movie_data_db(data=movie)
+
+@router.get('get/details/{q}')
+async def get_movie_details(q: str):
+    url = "https://online-movie-database.p.rapidapi.com/auto-complete"
+    querystring = {"q":q}
+    headers = {
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com",
+        "X-RapidAPI-Key": "73df39b16emshe3a71a281051d10p103edajsn7e688fb62016"
+    }
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    res = response.json()["d"][0]
+
+    return res

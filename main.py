@@ -7,7 +7,8 @@ from routes.login import router as LoginRouter
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://online-movie-database.p.rapidapi.com"
 ]
 
 app.add_middleware(
